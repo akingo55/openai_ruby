@@ -19,7 +19,7 @@ class OpenaiApi
           temperature: 0,
           messages: build_messages,
           functions: build_functions,
-          function_call: { name: 'recipe_analysis' }
+          function_call: { name: FUNCTION_NAME }
         }
       )
     end
