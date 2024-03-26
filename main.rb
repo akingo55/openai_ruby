@@ -1,5 +1,19 @@
 require_relative 'lib/openai_api'
+require_relative 'lib/notion_api'
 
-text = '夫が「今まで食べた麻婆豆腐で一番好き」と言ってくれた私の定番レシピ、ふわふわ鶏塩麻婆豆腐。調味料は塩&料理酒&豆板醤の３つだけ！豆腐の水切り不要、なんとオイルも使いません。調理時間10分でここまで美味しくなるんです。山椒&ラー油をトッピングするとさらに本格的。騙されたと思ってぜひ…！'
-res = OpenaiApi.new(user_text: text).get_chat_results
-puts res
+class RecipeAnalysis
+  def self.run
+    puts '[start] RecipeAnalysis.run'
+    notion_api = NotionApi.new
+    pages = notion_api.database_pages
+    pages.each do |page|
+      openai_response = OpenaiApi.new(user_text: page[:description]).extract_structure_data
+      next if openai_response.empty?
+
+      notion_api.update_database_pages(page[:id], openai_response[:title], openai_response[:category])
+    end
+    puts '[end] RecipeAnalysis.run'
+  end
+end
+
+RecipeAnalysis.run
