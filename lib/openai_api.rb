@@ -10,7 +10,7 @@ class OpenaiApi
   CATEGORY_CLASSIFICATION_FILE = 'categories.json'
 
   def initialize(user_text:)
-    @model = 'gpt-4-turbo-preview'
+    @model = ENV['OPENAI_MODEL_NAME']
     @openai_api_key = ENV['OPENAI_API_KEY']
     @user_text = user_text.strip
   end

@@ -10,6 +10,7 @@ bundle install
 export OPENAI_APY_KEY=xxx
 export NOTION_API_TOKEN=xxx
 export NOTION_DATABASE_ID=xxx
+export OPENAI_MODEL_NAME=gpt-4-turbo-preview
 ```
 You need to create Notion's integration to get `NOTION_API_TOKEN`.
 ## How to run
