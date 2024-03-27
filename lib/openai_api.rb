@@ -18,7 +18,7 @@ class OpenaiApi
   attr_reader :model, :openai_api_key, :user_text
 
   def extract_structure_data
-    response = with_retries(retry_option) do
+    response = with_retries(retry_options) do
       client.chat(
         parameters: {
           model: model,
@@ -45,7 +45,7 @@ class OpenaiApi
     OpenAI::Client.new(access_token: openai_api_key)
   end
 
-  def retry_option
+  def retry_options
     {
       max_retries: MAX_RETRY_COUNT,
       rescue: [Faraday::TimeoutError],
