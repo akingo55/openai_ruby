@@ -1,5 +1,5 @@
-# openai_ruby
-This tool is to estimate recipe title and category with OpenAI, which get recipe description from the particular notion database and then estimate the title and category, and update the notion pages.
+# recipe-extractor-ruby
+This tool estimates recipe titles and categories with OpenAI, which gets recipe descriptions from the particular notion database, and then estimates the title and category, and updates the notion pages.
 ## Install
 ```bash
 rbenv install $(cat .ruby-version)
