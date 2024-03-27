@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'lib/openai_api'
 require_relative 'lib/notion_api'
 
