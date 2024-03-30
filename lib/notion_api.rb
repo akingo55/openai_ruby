@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require 'notion-ruby-client'
-require_relative 'categories'
+require_relative 'category'
 
 class NotionApi
-  include Categories
-
   class NoValidParameterError < StandardError; end
 
   def initialize
@@ -59,7 +57,7 @@ class NotionApi
   end
 
   def valid_category?(category)
-    category_names.include?(category)
+    Category.names.include?(category)
   end
 
   def build_properties(title, category)

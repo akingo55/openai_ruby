@@ -2,10 +2,9 @@
 
 require 'openai'
 require 'retries'
-require_relative 'categories'
+require_relative 'category'
 
 class OpenaiApi
-  include Categories
 
   MAX_RETRY_COUNT = 3
   FUNCTION_NAME = 'recipe_analysis'
@@ -74,8 +73,8 @@ class OpenaiApi
             },
             category: {
               type: :string,
-              enum: category_names,
-              description: "一番合致するカテゴリ\n#{category_description}"
+              enum: Category.names,
+              description: "一番合致するカテゴリ\n#{Category.description}"
             }
           },
           require: ['title']
