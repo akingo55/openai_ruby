@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require 'notion-ruby-client'
-require 'json'
+require_relative 'categories'
 
 class NotionApi
-  class NoValidParameterError < StandardError; end
+  include Categories
 
-  CATEGORY_CLASSIFICATION_FILE = 'categories.json'
+  class NoValidParameterError < StandardError; end
 
   def initialize
     @notion_api_token = ENV['NOTION_API_TOKEN']
@@ -59,12 +59,7 @@ class NotionApi
   end
 
   def valid_category?(category)
-    categories.include?(category)
-  end
-
-  def categories
-    json = JSON.parse(File.read(CATEGORY_CLASSIFICATION_FILE), symbolize_names: true)
-    json.map { |c| c[:name] }
+    category_names.include?(category)
   end
 
   def build_properties(title, category)

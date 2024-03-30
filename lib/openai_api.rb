@@ -2,12 +2,13 @@
 
 require 'openai'
 require 'retries'
-require 'json'
+require_relative 'categories'
 
 class OpenaiApi
+  include Categories
+
   MAX_RETRY_COUNT = 3
   FUNCTION_NAME = 'recipe_analysis'
-  CATEGORY_CLASSIFICATION_FILE = 'categories.json'
 
   def initialize(user_text:)
     @model = ENV['OPENAI_MODEL_NAME']
@@ -59,14 +60,7 @@ class OpenaiApi
     [{ role: 'user', content: introduction_text + user_text }]
   end
 
-  def categories
-    JSON.parse(File.read(CATEGORY_CLASSIFICATION_FILE), symbolize_names: true)
-  end
-
   def build_functions
-    category_names = categories.map { |c| c[:name] }
-    category_explanation = categories.map { |c| [c[:name], c[:description]].join(':') }.join(',')
-
     [
       {
         name: FUNCTION_NAME,
@@ -81,7 +75,7 @@ class OpenaiApi
             category: {
               type: :string,
               enum: category_names,
-              description: "一番合致するカテゴリ\n#{category_explanation}"
+              description: "一番合致するカテゴリ\n#{category_description}"
             }
           },
           require: ['title']
