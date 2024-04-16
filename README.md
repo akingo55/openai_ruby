@@ -20,5 +20,6 @@ ruby main.rb
 ## Result
 You can see like this:
 
-![image](https://github.com/akingo55/openai_ruby/assets/43959158/95242723-6452-4bab-b98b-76b6c78bb1af)
+<img width="958" alt="image" src="https://github.com/akingo55/recipe-extractor-ruby/assets/43959158/4a46e055-d3d0-4e8e-abcd-7004f609e08b">
+
 
