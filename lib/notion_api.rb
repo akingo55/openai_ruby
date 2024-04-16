@@ -18,10 +18,10 @@ class NotionApi
     descriptions(response[:results])
   end
 
-  def update_database_pages(page_id, title, category)
-    check_parameters(title, category)
+  def update_database_page(page_id, params)
+    check_parameters(params)
 
-    properties = build_properties(title, category)
+    properties = build_properties(params)
     client.update_page(page_id: page_id, properties: properties)
   end
 
@@ -39,10 +39,22 @@ class NotionApi
 
   def empty_title_filter
     {
-      'and': [
+      'or': [
         {
           'property': 'Title',
           'rich_text': {
+            'is_empty': true
+          }
+        },
+        {
+          'property': 'Category',
+          'select': {
+            'is_empty': true
+          }
+        },
+        {
+          'property': 'Ingredients',
+          'multi_select': {
             'is_empty': true
           }
         }
@@ -50,32 +62,36 @@ class NotionApi
     }
   end
 
-  def check_parameters(title, category)
-    raise NoValidParameterError, "[Error] category:#{category} is not valid." unless valid_category?(category)
+  def check_parameters(params)
+    raise NoValidParameterError, "[Error] one or some of parameters are not valid. params:#{params}" if params.values.any? {|p| p.empty? }
 
-    raise NoValidParameterError, '[Error] title is empty.' if title.nil?
+    category = params[:category]
+    raise NoValidParameterError, "[Error] category:#{category} is not valid." unless valid_category?(category)
   end
 
   def valid_category?(category)
     Category.names.include?(category)
   end
 
-  def build_properties(title, category)
+  def build_properties(params)
     {
       'Title': {
         'rich_text': [
           {
             'type': 'text',
             'text': {
-              'content': title
+              'content': params[:title]
             }
           }
         ]
       },
       'Category': {
         'select': {
-          'name': category
+          'name': params[:category]
         }
+      },
+      'Ingredients': {
+        'multi_select': params[:ingredients].map { |i| { name: i } }
       }
     }
   end

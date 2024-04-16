@@ -12,7 +12,7 @@ class RecipeAnalysis
       openai_response = OpenaiApi.new(user_text: page[:description]).extract_structure_data
       next if openai_response.empty?
 
-      notion_api.update_database_pages(page[:id], openai_response[:title], openai_response[:category])
+      notion_api.update_database_page(page[:id], openai_response)
     end
     puts '[end] RecipeAnalysis.run'
   end
